@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Column;
 
 @Entity // diyo ki bu bir veritabanı tablosu bu sınıf böyle demek
 public class Vehicle {
@@ -18,6 +19,8 @@ public class Vehicle {
     private String plate;
     private String brand;
     private String model;
+
+    @Column(name = "manufacture_year") //h2 veritabanında year kelimesi sorun yarattı bu yüzden yazdık, rezerve edilmiş kelimeydi h2 bunu anahtar kelime olarak görüyodu sutun ismi olarak değil
     private int year;
     private String color;
     private double dailyRate;

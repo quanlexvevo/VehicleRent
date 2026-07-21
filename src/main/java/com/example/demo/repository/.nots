@@ -7,7 +7,7 @@ işte bean bu üretilen nesne oluyor interface in kendisi değil
 peki @bean demedik nası oldu bu, çünkü zorunlu değil yollarından biri biz otomatik konfigürasyon yaptık:
 pom.xml e spring-boot-starter-data-jpa eklediğimizde Spring Boot arkaplanda otomatik olarak @EnableJpaRepositories  i devreye sokuyor
 bu mekanizma uygulamayı ayağa kaldırırken projedeki paketleri scanlıyor ve JpaRepository'den türeyen her interface' i bul diyor.
-bulunca da spring otomatik proxy implementasyonu üretiyor ve bu ürettiği nesneyi kendi context'ine bean olarak kaydediyor. 
+bulunca da spring otomatik proxy implementasyonu üretiyor ve bu ürettiği nesneyi kendi context'ine bean olarak kaydediyor.
 
 public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 } benim kodum bu mesela  üzerinde @Repository anotasyonu yok
