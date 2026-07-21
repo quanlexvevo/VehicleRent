@@ -1,0 +1,40 @@
+
+(bu arada bean bir nesnedir, bizim interface imiz bir tanım - sözleşme, ta kendisi bean değil.)
+Repository udemy kursundaki Spring context ve beans i kullandıgımız yer peki nasıl:
+uygulama başladığında arkaplanda spring şablona bakıp gerçek bir implementasyonunu oluşturuyor , buna da proxy nesne deniyor
+işte bean bu üretilen nesne oluyor interface in kendisi değil
+
+peki @bean demedik nası oldu bu, çünkü zorunlu değil yollarından biri biz otomatik konfigürasyon yaptık:
+pom.xml e spring-boot-starter-data-jpa eklediğimizde Spring Boot arkaplanda otomatik olarak @EnableJpaRepositories  i devreye sokuyor
+bu mekanizma uygulamayı ayağa kaldırırken projedeki paketleri scanlıyor ve JpaRepository'den türeyen her interface' i bul diyor.
+bulunca da spring otomatik proxy implementasyonu üretiyor ve bu ürettiği nesneyi kendi context'ine bean olarak kaydediyor. 
+
+public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
+} benim kodum bu mesela  üzerinde @Repository anotasyonu yok
+
+
+
+
+
+JpaRepository den miras alındığı için otomatik olarak, findAll() , findById(id), save(vehicle) -> yeni araç ekle veya güncelle,
+deleteById(id) gibi fonksiyonlara erişimimiz otomatik oluyor
+
+peki repository neden interface olarak kullanıldı, çünkü spring JPA runtime olarak implement ediyor, kodu arkaplanda kendisi yazıyor
+ben diyorum ki böyle bir repo istiyorum,şu şu şu entity için böyle diye, gerisini spring yapıyor.
+
+
+JPA nedir peki javada nesnelerle çalısıyoruz ama veritabanı nesneleri bilmez, tablo ve satırları bilir.
+Java ---> nesneler (Vehicle vehicle = new Vehicle();)
+Veritabanı -----> tablolar,satırlar,sorgular (INSERT INTO vehicle VALUES ...)
+bu iki ayrı yerin çevirmenliğini yapıyor bir standart kurallar bütünü.
+
+Kullandığım yerlerden örnekler: @Entity              // JPA'ya ait: "bu sınıf bir veritabanı tablosu"
+                                public class Vehicle {
+
+                                    @Id              // JPA'ya ait: "bu alan primary key"
+                                    @GeneratedValue(strategy = GenerationType.IDENTITY)  // JPA'ya ait
+                                    private Long id;
+
+                                    @Enumerated(EnumType.STRING)  // JPA'ya ait
+                                    private VehicleStatus status;
+                                }
