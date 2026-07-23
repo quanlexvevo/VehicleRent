@@ -1,0 +1,29 @@
+katmanlı mimari ile kodun daha okunabilir işin içinden çıkılabilir haline getiriyoruz
+
+controller bizim isteğimizi karşılayan kısım
+
+
+service katmanı kontrol sağlıyor, mantığın devreye girdiği yerler, süzgeç görevi, iş yükü servicetedir,eğer sıkıntı olursa isteği
+tekrar controllera veriyoruz
+
+repository veritabanına erişmek için kullandıgımız katman, misal diyo ki id si 55 olan aracı getir diyor bunu da
+veritabanından getiriyo
+
+repo bunu geri servise dönüyor ordan controllera dönüyor ordan cliente veriyor.
+
+Client (Postman)
+     ↓ istek gönderir (örn: GET /vehicles/55)
+Controller
+     ↓ Service'i çağırır
+Service
+     ↓ Repository'yi çağırır
+Repository
+     ↓ veritabanına SQL sorgusu atar
+Veritabanı (H2)
+     ↑ veriyi döner
+Repository
+     ↑ Service'e döner
+Service
+     ↑ (varsa) kontrol/mantık uygular, Controller'a döner
+Controller
+     ↑ HTTP cevabı olarak Client'a döner (JSON formatında)
