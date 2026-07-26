@@ -4,6 +4,8 @@ import com.example.demo.entity.Customer;
 import com.example.demo.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.example.demo.exception.ResourceNotFoundException;
+
 
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class CustomerService {
 
     public Customer getCustomerById(Long id) { //belli bir idye sahip müşteriyi getiriyor
         return customerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Customer not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with id: " + id));
     }
 
     public Customer addCustomer(Customer customer) {

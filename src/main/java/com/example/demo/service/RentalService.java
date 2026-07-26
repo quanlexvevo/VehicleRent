@@ -8,6 +8,8 @@ import com.example.demo.entity.enums.VehicleStatus;
 import com.example.demo.repository.CustomerRepository;
 import com.example.demo.repository.RentalRepository;
 import com.example.demo.repository.VehicleRepository;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.exception.InvalidOperationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,23 +39,23 @@ public class RentalService {
 
     public Rental getRentalById(Long id) { //belli bir id ye sahip kiralamaları getirir,eğer yoska hata fırlatır uygulama çökmez
         return rentalRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Rental not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Rental not found with id: " + id));
     }
 
     //yeni kiralama oluşturma
     public Rental createRental(Long vehicleId, Long customerId, LocalDate startDate, LocalDate endDate) {
 
-       //verilen id'lerle gerçek araç ve müşteri nesnelerini veritabanından buluyoruz
+        //verilen id'lerle gerçek araç ve müşteri nesnelerini veritabanından buluyoruz
         Vehicle vehicle = vehicleRepository.findById(vehicleId)
-                .orElseThrow(() -> new RuntimeException("Vehicle not found with id: " + vehicleId));
+                .orElseThrow(() -> new ResourceNotFoundException("Vehicle not found with id: " + vehicleId));
 
         Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found with id: " + customerId));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with id: " + customerId));
 
 
         //eğer araç kiradaysa,bakımdaysa veyahut hasarlıysa izin vermicek
         if (vehicle.getStatus() != VehicleStatus.AVAILABLE) {
-            throw new RuntimeException("Vehicle is not available for rental");
+            throw new InvalidOperationException("Vehicle is not available for rental");
         }
 
         //yeni bir kiralama listesi oluşturup bilgileri dolduruyoruz
@@ -79,7 +81,7 @@ public class RentalService {
     // aracı teslim alma
     public Rental returnVehicle(Long rentalId) {
 
-       //kiralama kaydı bulunuyor
+        //kiralama kaydı bulunuyor
         Rental rental = getRentalById(rentalId);
 
         //gerçek teslim tarihi bugün olarak işaretleniyor

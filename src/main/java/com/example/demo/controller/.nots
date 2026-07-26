@@ -1,0 +1,9 @@
+postta neden direkt dto kullanmayıp damagerecord metodu oluşturduk, çünkü servis katmanı createdamagecontrol metodu
+parametre olarak (Long vehicleId, Long rentalId, DamageRecord newRecord) bekliyor, gerçek entity bekliyor
+o yüzden controllerda dtodan gerçek damagerecord nesnesini elle oluşturup service e öyle veriyoruz, bu DTO ile Entity
+arasındaki çeviri işini controllerin yapması gerektiğini gösteriyor
+
+
+neden /vehicle/{vehicleId} gibi ekstradan get endpointi var, şimdi şöyle damagerecordservice de getdamagerecordsbyvehicleid
+diye bir metot var, belli bi aracın hasar geçmişini görmek için, standart 5 endpointe ek olarak özel sorguyu dışarı acmak
+istedik
