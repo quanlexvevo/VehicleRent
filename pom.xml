@@ -63,6 +63,7 @@
             <artifactId>lombok</artifactId>
             <scope>annotationProcessor</scope>
         </dependency>
+
     </dependencies>
 
     <build>

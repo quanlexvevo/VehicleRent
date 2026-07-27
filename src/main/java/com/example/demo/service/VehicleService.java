@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 // Vehicle entity'sini ve status enum'unu kullanacağız
 import com.example.demo.entity.Vehicle;
+import com.example.demo.exception.InvalidOperationException;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,9 @@ public class VehicleService {
 
     //yeni bir araç ekler
     public Vehicle addVehicle(Vehicle vehicle) {
-        return vehicleRepository.save(vehicle);
+        if (vehicleRepository.existsByPlateIgnoreCase(vehicle.getPlate())) {
+            throw new InvalidOperationException("A vehicle with plate '" + vehicle.getPlate() + "' already exists");
+        }return vehicleRepository.save(vehicle);
     }
 
     //var olan bir aracı günceller
@@ -44,7 +47,13 @@ public class VehicleService {
         // Önce eski kaydı buluyoruz
         Vehicle existingVehicle = getVehicleById(id);
 
-        //eski kaydın alanlarını, yeni gelen bilgilerle güncelliyoruz
+        // Eğer plaka değişiyorsa VE yeni plaka başka bir araca aitse, hata fırlat
+        // (kendi eski plakasıyla aynıysa sorun yok, sadece "başka bir araçla çakışma" durumunu engelliyoruz)
+        if (!existingVehicle.getPlate().equalsIgnoreCase(updatedVehicle.getPlate())
+                && vehicleRepository.existsByPlateIgnoreCase(updatedVehicle.getPlate())) {
+            throw new InvalidOperationException("A vehicle with plate '" + updatedVehicle.getPlate() + "' already exists");
+        }
+
         existingVehicle.setPlate(updatedVehicle.getPlate());
         existingVehicle.setBrand(updatedVehicle.getBrand());
         existingVehicle.setModel(updatedVehicle.getModel());
@@ -53,7 +62,6 @@ public class VehicleService {
         existingVehicle.setDailyRate(updatedVehicle.getDailyRate());
         existingVehicle.setStatus(updatedVehicle.getStatus());
 
-        //güncellenmiş nesneyi veritabanına kaydediyoruz
         return vehicleRepository.save(existingVehicle);
     }
 

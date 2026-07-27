@@ -89,7 +89,10 @@ public class RentalService {
         rental.setStatus(RentalStatus.COMPLETED); //kiralamamız tamamlandı
 
         Vehicle vehicle = rental.getVehicle();
-        vehicle.setStatus(VehicleStatus.AVAILABLE); // aracı tekrar müsait duruma geçiriyoruz
+
+        if (vehicle.getStatus() != VehicleStatus.DAMAGED) {
+            vehicle.setStatus(VehicleStatus.AVAILABLE);
+        }// aracı tekrar müsait duruma geçiriyoruz
         vehicleRepository.save(vehicle); // bu değişikliği veritabanına kaydediyoruz
 
         return rentalRepository.save(rental); //güncellenmiş kiralama kaydını veritabanına kaydedip döndürüyoruz
