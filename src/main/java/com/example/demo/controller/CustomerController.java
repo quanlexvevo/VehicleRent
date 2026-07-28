@@ -4,6 +4,7 @@ import com.example.demo.entity.Customer;
 import com.example.demo.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -33,13 +34,13 @@ public class CustomerController {
 
     //POST /customers → yeni müşteri ekler
     @PostMapping
-    public Customer addCustomer(@RequestBody Customer customer) {
+    public Customer addCustomer(@Valid @RequestBody Customer customer) {
         return customerService.addCustomer(customer);
     }
 
     //PUT /customers/5 → var olan müşteriyi günceller
     @PutMapping("/{id}")
-    public Customer updateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
+    public Customer updateCustomer(@Valid @PathVariable Long id, @RequestBody Customer customer) {
         return customerService.updateCustomer(id, customer);
     }
 

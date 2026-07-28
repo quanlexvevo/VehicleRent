@@ -5,6 +5,7 @@ import com.example.demo.entity.Rental;
 import com.example.demo.service.RentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class RentalController {
     //POST /rentals → yeni kiralama başlatır
     //body'de CreateRentalRequest formatında JSON bekliyoruz (vehicleId, customerId, startDate, endDate)
     @PostMapping
-    public Rental createRental(@RequestBody CreateRentalRequest request) {
+    public Rental createRental(@Valid @RequestBody CreateRentalRequest request) {
         return rentalService.createRental(
                 request.getVehicleId(),
                 request.getCustomerId(),
@@ -49,7 +50,7 @@ public class RentalController {
     //gönderiyoruz rentalserivce'teki returnvehicle metodu bunu otomatik yapıyor,kontrol sistemde yani yanlıs girme
     //riskini azaltıyor
     @PutMapping("/{id}/return")
-    public Rental returnVehicle(@PathVariable Long id) {
+    public Rental returnVehicle(@Valid @PathVariable Long id) {
         return rentalService.returnVehicle(id);
     }
 

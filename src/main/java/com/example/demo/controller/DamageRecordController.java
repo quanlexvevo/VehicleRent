@@ -5,7 +5,7 @@ import com.example.demo.entity.DamageRecord;
 import com.example.demo.service.DamageRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import jakarta.validation.Valid;
 import java.util.List;
 
 
@@ -46,7 +46,7 @@ public class DamageRecordController {
     // POST /damage-records yeni hasar kaydı oluşturur
     // Body'de CreateDamageRecordRequest formatında JSON bekliyoruz
     @PostMapping
-    public DamageRecord createDamageRecord(@RequestBody CreateDamageRecordRequest request) {
+    public DamageRecord createDamageRecord(@Valid @RequestBody CreateDamageRecordRequest request) {
         //service'in beklediği DamageRecord nesnesini, DTO'dan gelen bilgilerle oluşturuyoruz
         DamageRecord newRecord = new DamageRecord();
         newRecord.setDescription(request.getDescription());
@@ -64,7 +64,7 @@ public class DamageRecordController {
     //PUT /damage-records/5/repair → hasarı onarıldı olarak işaretler
     //"returnVehicle" ile aynı mantık: bu da bir eylem (action), sıradan bir güncelleme değil
     @PutMapping("/{id}/repair")
-    public DamageRecord markAsRepaired(@PathVariable Long id) {
+    public DamageRecord markAsRepaired(@Valid @PathVariable Long id) {
         return damageRecordService.markAsRepaired(id);
     }
 

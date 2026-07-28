@@ -1,6 +1,7 @@
 package com.example.demo.dto;
 
 import java.time.LocalDate;
+import jakarta.validation.constraints.NotNull;
 
 //Data Transfer Object dto demek bunu yaptık cünkü createrental 4 parametre alıyor, postmanden json gönderirken bu 4 bilgiyi
 //taşıcak yardımcı sınıf olarak kullanıyoruz
@@ -11,9 +12,16 @@ import java.time.LocalDate;
 //ama Postman'den sadece ID göndermek istiyoruz (34 numaralı araç, 7 numaralı müşteri gibi)
 public class CreateRentalRequest {
 
+    @NotNull(message = "Vehicle id is required")
     private Long vehicleId;
+
+    @NotNull(message = "Customer id is required")
     private Long customerId;
+
+    @NotNull(message = "Start date is required")
     private LocalDate startDate;
+
+    @NotNull(message = "End date is required")
     private LocalDate endDate;
 
 

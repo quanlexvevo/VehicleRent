@@ -2,15 +2,23 @@ package com.example.demo.dto;
 
 import com.example.demo.entity.enums.DamageSeverity;
 import java.time.LocalDate;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Min;
 
 // Postman'den POST /damage-records isteği atarken
 // gönderilecek JSON'un şeklini tanımlıyoruz
 public class CreateDamageRecordRequest {
 
+    @NotNull(message = "Vehicle id is required")
     private Long vehicleId;
+    @NotNull(message = "Rental id is required")
     private Long rentalId;
+    @NotBlank(message = "Description cannot be empty")
     private String description;
+    @NotNull(message = "Severity is required")
     private DamageSeverity severity;
+    @Min(value = 0, message = "Estimated repair cost cannot be negative")
     private double estimatedRepairCost;
     private LocalDate damageDate; //opsiyonel,boş bırakılırsa Service otomatik bugünün tarihini atıyor
 

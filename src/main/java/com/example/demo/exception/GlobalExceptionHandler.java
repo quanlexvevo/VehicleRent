@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.validation.FieldError;
+import java.util.HashMap;
 
 //şimdi global exception her hatayı merkezden yakalamak için kullanılıyor, ozaman neden diğer 2 exception dosyasını oluşturdul
 //cünkü invalidoperation ve resourcenotfound service katmanında hata fırlatmak için kullanılıyor, HATA FIRLATMAK bak
@@ -49,6 +52,24 @@ public class GlobalExceptionHandler {
         body.put("status", HttpStatus.BAD_REQUEST.value()); // 400
         body.put("error", "Bad Request");
         body.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+    // @Valid ile işaretlenmiş bir alan kuralı ihlal edildiğinde bu metot devreye girer
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, Object>> handleValidationErrors(MethodArgumentNotValidException ex) {
+
+        // Hangi alanda hangi hata olduğunu tek tek topluyoruz
+        Map<String, String> fieldErrors = new HashMap<>();
+        for (FieldError error : ex.getBindingResult().getFieldErrors()) {
+            fieldErrors.put(error.getField(), error.getDefaultMessage());
+        }
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("error", "Validation Failed");
+        body.put("fieldErrors", fieldErrors);
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }

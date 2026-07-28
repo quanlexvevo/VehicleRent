@@ -4,6 +4,7 @@ import com.example.demo.entity.Vehicle;
 import com.example.demo.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -43,14 +44,14 @@ public class VehicleController {
     // @RequestBody ile, Postman'den gönderilen JSON verisi otomatik olarak
     // bir Vehicle nesnesine çevrilir
     @PostMapping
-    public Vehicle addVehicle(@RequestBody Vehicle vehicle) {
+    public Vehicle addVehicle(@Valid @RequestBody Vehicle vehicle) {
         return vehicleService.addVehicle(vehicle);
     }
 
     // PUT /vehicles/5
     // Var olan bir aracı günceller
     @PutMapping("/{id}")
-    public Vehicle updateVehicle(@PathVariable Long id, @RequestBody Vehicle vehicle) {
+    public Vehicle updateVehicle(@PathVariable Long id,@Valid @RequestBody Vehicle vehicle) {
         return vehicleService.updateVehicle(id, vehicle);
     }
 

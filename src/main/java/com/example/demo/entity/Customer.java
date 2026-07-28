@@ -4,7 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Customer {
@@ -13,10 +15,17 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Full name cannot be empty")
     private String fullName;
+    @NotBlank(message = "National ID cannot be empty")
+    @Size(min = 11, max = 11, message = "National ID must be 11 digits")
     private String nationalId; //tc kimlik
+    @NotBlank(message = "Phone cannot be empty")
     private String phone;
+    @NotBlank(message = "Email cannot be empty")
+    @Email(message = "Email must be a valid email address")
     private String email;
+    @NotBlank(message = "License number cannot be empty")
     private String licenseNumber; //ehliyet no
 
 

@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class DamageRecord {
@@ -27,6 +28,7 @@ public class DamageRecord {
     //hasar hangi kiralamada meydana geldi, yine aynı şekilde bir kiralamada da birden fazla olabilir
     @ManyToOne
     @JoinColumn(name = "rental_id")
+    @JsonIgnoreProperties({"vehicle"})
     private Rental rental;
 
     private LocalDate damageDate;

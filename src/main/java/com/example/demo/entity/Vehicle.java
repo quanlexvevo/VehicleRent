@@ -8,6 +8,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Max;
 
 @Entity // diyo ki bu bir veritabanı tablosu bu sınıf böyle demek
 public class Vehicle {
@@ -16,17 +20,27 @@ public class Vehicle {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // sen id leri elle atama otomatik atasın diye var
     private Long id;
 
+    @NotBlank(message = "Plate cannot be empty")
     private String plate;
+    @NotBlank(message = "Brand cannot be empty")
     private String brand;
+
+    @NotBlank(message = "Model cannot be empty")
     private String model;
 
+    @Min(value = 1980, message = "Year must be 1980 or later")
+    @Max(value = 2030, message = "Year cannot be later than 2030")
     @Column(name = "manufacture_year") //h2 veritabanında year kelimesi sorun yarattı bu yüzden yazdık, rezerve edilmiş kelimeydi h2 bunu anahtar kelime olarak görüyodu sutun ismi olarak değil
     private int year;
+    @NotBlank(message = "Color cannot be empty")
     private String color;
+    @Min(value = 0, message = "Daily rate cannot be negative")
     private double dailyRate;
 
+    @NotNull(message = "Status cannot be null")
     @Enumerated(EnumType.STRING)
     private VehicleStatus status; // available, rented, in_maintenance, damaged (müsait - kiarada - bakımda - hasarlı)
+
 
 
 
