@@ -250,7 +250,6 @@ API, iki tür özel hata döner:
 ## Geliştirmeye Açık Noktalar
 
 - Kimlik doğrulama ve yetkilendirme (Spring Security + JWT)
-- Veri doğrulama (Bean Validation — `@NotBlank`, `@Min` gibi anotasyonlarla alan kontrolü)
 - Sayfalama (pagination) ve filtreleme
 - Unit ve entegrasyon testleri
 - Tarih çakışması kontrolü (aynı aracın aynı tarih aralığında iki kez kiralanmasını engelleme — şu an sadece araç durumu üzerinden dolaylı bir koruma var, gerçek tarih bazlı kontrol yok)
